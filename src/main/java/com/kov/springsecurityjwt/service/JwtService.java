@@ -92,7 +92,5 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);//вытаскиеваем из payload имя
         }
 
-
-
     }
 
