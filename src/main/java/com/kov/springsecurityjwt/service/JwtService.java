@@ -1,8 +1,6 @@
 package com.kov.springsecurityjwt.service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -92,5 +90,29 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);//вытаскиеваем из payload имя
         }
 
+    public String getUsernameFromToken(String token) throws IllegalAccessException {
+        if (token == null || token.trim().isEmpty()) {
+            log.error("Token is null or empty");
+            throw new IllegalArgumentException("Token is null or empty");
+        }
+        try {
+            String username = extractUsername(token);
+            if (username == null || username.trim().isEmpty()) {
+                log.error("Username not found in token: {}", token);
+                throw new IllegalArgumentException("Username not found in token");
+            }
+            return username;
+        } catch (ExpiredJwtException e) {
+            log.warn("Token has expired: {}", e.getMessage());
+            throw e;
+        } catch (SignatureException | MalformedJwtException | UnsupportedJwtException e) {
+            log.warn("Invalid JWT token: {}", e.getMessage());
+            throw new IllegalArgumentException("Invalid token", e);
+        }
     }
+
+    }
+
+
+
 

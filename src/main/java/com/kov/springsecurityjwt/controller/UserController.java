@@ -1,4 +1,4 @@
-package com.kov.springsecurityjwt.UserController;
+package com.kov.springsecurityjwt.controller;
 
 import com.kov.springsecurityjwt.Dto.RegisterRequestDto;
 import com.kov.springsecurityjwt.model.User;
